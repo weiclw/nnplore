@@ -1,3 +1,4 @@
+import math
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -17,8 +18,8 @@ class SimpleSingleLayerNN(nn.Module):
 
 class Runner():
     def __init__(self):
-        self.num_epochs = 1000
-        self.num_samples = 100
+        self.num_epochs = 2000
+        self.num_samples = 200
         self.input_size = 2
         self.output_size = 1
         self.data = None
@@ -26,7 +27,7 @@ class Runner():
         self.model = SimpleSingleLayerNN(self.input_size, self.output_size)
         # Binary Cross Entropy Loss for binary classification.
         self.criterion = nn.BCELoss()
-        self.optimizer = optim.SGD(self.model.parameters(), lr=0.1)
+        self.optimizer = optim.SGD(self.model.parameters(), lr=0.25)
 
     def run(self):
         self.prepare_data()
@@ -47,7 +48,8 @@ class Runner():
         self.optimizer.zero_grad()
         loss.backward()
         self.optimizer.step()
-        print(f'Epoch [{epoch}], loss {loss.item():.4f}')
+        if epoch % 20 == 0 or epoch == self.num_epochs - 1:
+            print(f'Epoch [{epoch}], loss {loss.item():.4f}, prob {math.exp(-1.0*loss.item()):.4f}')
 
     def validate(self):
         print('Done without validation')
