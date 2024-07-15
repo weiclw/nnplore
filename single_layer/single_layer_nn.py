@@ -72,10 +72,11 @@ class Runner():
             print('Skip testing')
 
     def do_validation(self):
+        print('Validating...')
         self.model.eval()
         with torch.no_grad():
             predictions = self.model(self.test_data)
-            print(f'Predictions: {predictions}')
-
+            for x,y in zip(self.test_data.tolist(), predictions.tolist()):
+                print(f'Test input {x}, result {y}')
 
 
