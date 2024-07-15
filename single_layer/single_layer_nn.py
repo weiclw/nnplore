@@ -29,6 +29,7 @@ class Runner():
         self.model = None
         self.criterion = None
         self.optimizer = None
+        self.test_data = None
 
     def run(self):
         self.prepare_model()
@@ -65,6 +66,16 @@ class Runner():
             print(f'Epoch [{epoch}], loss {loss.item():.4f}, prob {math.exp(-1.0*loss.item()):.4f}')
 
     def validate(self):
-        print('Done without validation')
+        if self.test_data is not None:
+            self.do_validation()
+        else:
+            print('Skip testing')
+
+    def do_validation(self):
+        self.model.eval()
+        with torch.no_grad():
+            predictions = self.model(self.test_data)
+            print(f'Predictions: {predictions}')
+
 
 

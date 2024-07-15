@@ -5,5 +5,8 @@ class SimpleRunner(Runner):
     def __init__(self):
         super(SimpleRunner, self).__init__()
 
+    def validate(self):
+        print('Done with validating')
+
 
 SimpleRunner().run()
