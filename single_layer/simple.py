@@ -2,8 +2,7 @@ from single_layer_nn import Runner
 
 
 class SimpleRunner(Runner):
-    def __init__(self):
-        super(SimpleRunner, self).__init__()
+    pass
 
 
 SimpleRunner().run()
