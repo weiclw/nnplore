@@ -2,6 +2,8 @@ from single_layer_nn import Runner
 import torch
 
 
+# Train the model to label points (x,y) whose x and y sum up positively,
+# and use a few extra data points to validate the model.
 class ValidatorRunner(Runner):
     def prepare_data(self):
         self.data = torch.randn(self.num_samples, self.input_size)
