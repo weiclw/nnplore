@@ -43,11 +43,9 @@ class Runner():
         # Binary Cross Entropy Loss for binary classification.
         self.criterion = nn.BCELoss()
         self.optimizer = optim.SGD(self.model.parameters(), lr=self.learning_rate)
-        
 
     def prepare_data(self):
-        self.data = torch.randn(self.num_samples, self.input_size)
-        self.target = (torch.sum(self.data, dim=1) > 0).float().unsqueeze(1)
+        pass
 
     def run_epoch(self, epoch):
         self.model.train()

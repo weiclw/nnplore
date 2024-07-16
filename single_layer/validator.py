@@ -3,8 +3,9 @@ import torch
 
 
 class ValidatorRunner(Runner):
-    def __init__(self):
-        super(ValidatorRunner, self).__init__()
+    def prepare_data(self):
+        self.data = torch.randn(self.num_samples, self.input_size)
+        self.target = (torch.sum(self.data, dim=1) > 0).float().unsqueeze(1)
         num_test_samples = 10
         self.test_data = torch.randn(num_test_samples, self.input_size)
 
