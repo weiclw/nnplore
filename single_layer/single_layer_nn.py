@@ -3,6 +3,14 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 
+# This is a framework to run a single layer neuron network.
+#
+# We are going to explore what a single layer neuron network
+# can achieve and its limitations.
+#
+# Derive your class from Runner below to customize your training
+# and testing of a single layer neuron network.
+
 
 class SingleLayerNN(nn.Module):
     def __init__(self, input_size, output_size):
