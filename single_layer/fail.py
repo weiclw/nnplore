@@ -6,6 +6,9 @@ import torch
 # is Not enough to filter the input data.
 # The condition (x[0] > 0 and x[1] > 0) calls for multiple neurons to
 # have a good result.
+
+# Pay attention to the output probablity, it should be no where near 0.9,
+# indicating that the neuron can not handle the case adequately.
 class FailRunner(Runner):
     def prepare_data(self):
         assert self.input_size==2, "Input size must be 2"
