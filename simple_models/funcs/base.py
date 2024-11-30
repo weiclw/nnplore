@@ -17,31 +17,35 @@ class SimpleNNSigmoid(nn.Module):
     def __init__(self):
         super(SimpleNNSigmoid, self).__init__()
         # Define a single hidden layer with 64 neurons
-        self.hidden = nn.Linear(1, 64)  # 1 input feature, 64 neurons in the hidden layer
+        self.h1 = nn.Linear(1, 64)  # 1 input feature, 64 neurons in the hidden layer
+        self.h2 = nn.Linear(64, 64)  # 1 input feature, 64 neurons in the hidden layer
         self.output = nn.Linear(64, 1)   # Output layer, 1 output (for the scalar function value)
 
     def forward(self, x):
         # Apply the hidden layer with Sigmoid activation
-        x = torch.sigmoid(self.hidden(x))
+        x = torch.relu(self.h1(x))
+        x = torch.relu(self.h2(x))
         # Output layer
         x = self.output(x)
         return x
 
 # Step 3: Create an instance of the neural network and define the loss function and optimizer
-model = SimpleNNSigmoid()
+device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
+print(f"Using device: {device}")
+model = SimpleNNSigmoid().to(device)
 
 # Use Mean Squared Error Loss since it's a regression problem
 criterion = nn.MSELoss()
-optimizer = optim.Adam(model.parameters(), lr=0.001)
+optimizer = optim.Adam(model.parameters(), lr=0.0003)
 
 # Step 4: Train the neural network
-num_epochs = 1000
+num_epochs = 4000
 for epoch in range(num_epochs):
     # Forward pass: Compute predicted y by passing x to the model
-    y_pred = model(x_tensor)
+    y_pred = model(x_tensor.to(device))
     
     # Compute loss
-    loss = criterion(y_pred, y_tensor)
+    loss = criterion(y_pred, y_tensor.to(device))
     
     # Backward pass: Compute gradients
     optimizer.zero_grad()
@@ -52,11 +56,11 @@ for epoch in range(num_epochs):
     
     # Print loss every 100 epochs for monitoring
     if (epoch + 1) % 100 == 0:
-        print(f'Epoch [{epoch+1}/{num_epochs}], Loss: {loss.item():.4f}')
+        print(f'Epoch [{epoch+1}/{num_epochs}], Loss: {loss.item():.5f}')
 
 # Step 5: Test the model and plot the results
 with torch.no_grad():
-    y_pred = model(x_tensor).numpy()
+    y_pred = model(x_tensor.to(device)).cpu().numpy()
 
 # Plot the original sine function and the neural network approximation
 plt.figure(figsize=(10, 6))
